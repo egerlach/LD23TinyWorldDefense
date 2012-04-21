@@ -14,22 +14,15 @@ package sprites
 		[Embed(source="../../assets/arrow.png")]
 		private var arrowImage:Class;
 		
-		public function HomeArrow(X:Number=0, Y:Number=0, SimpleGraphic:Class=null) 
+		public function HomeArrow(X:Number=50, Y:Number=50, SimpleGraphic:Class=null) 
 		{
 			super(X, Y, arrowImage);
+			scrollFactor = new FlxPoint();
 		}
 		
-		override public function update():void
+		public function pointToHome(ship:Ship, world:World):void
 		{
-			var p:FlxPoint = getMidpoint();
-			x = FlxG.camera.x;
-			y = FlxG.camera.y;
-			super.update();
-		}
-		
-		public function pointToHome(world:World):void
-		{
-			angle = FlxU.getAngle(getMidpoint(), world.getMidpoint());
+			angle = FlxU.getAngle(ship.getMidpoint(), world.getMidpoint());
 		}
 		
 	}

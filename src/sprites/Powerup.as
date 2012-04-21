@@ -8,17 +8,23 @@ package sprites
 	 */
 	public class Powerup extends FlxSprite 
 	{
+		public static const size:Number = 8.0;
+		public static const types:Array = [];
 		
-		public function Powerup(X:Number=0, Y:Number=0) 
+		public function Powerup(colour:uint) 
 		{
-			super(X, Y);
-			setupGraphics();
+			super(0, 0);
+			setupGraphics(colour);
 		}
 		
-		public function setupGraphics()
+		public function setupGraphics(colour:uint):void
 		{
+			makeGraphic(size, size, colour);
 		}
 		
+		public function addToWorld(w:World):void
+		{
+		}
 	}
 
 }

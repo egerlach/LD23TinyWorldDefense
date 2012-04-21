@@ -2,7 +2,9 @@ package sprites
 {
 	import flash.display.BitmapData;
 	import flash.geom.Point;
+	import org.flixel.FlxBasic;
 	import org.flixel.FlxG;
+	import org.flixel.FlxGroup;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	
@@ -14,14 +16,16 @@ package sprites
 	{
 		[Embed(source = "../../assets/ship.png")]
 		private var shipImage:Class;
-		
 		private var maxSpeed:Number;
+		private var cargo:FlxGroup;
 		
 		public function Ship(X:Number=0, Y:Number=0) 
 		{
 			super(X, Y, shipImage);
 			maxSpeed = 1000;
 			velocity = new FlxPoint();
+			cargo = new FlxGroup(1);
+			FlxG.state.add(cargo);
 		}
 		
 		override public function update():void
@@ -54,10 +58,39 @@ package sprites
 			if (p.length > maxSpeed)
 				p.normalize(maxSpeed);
 			velocity.copyFromFlash(p);
-				
+			
+			if (hasCargo())
+			{
+				var c:FlxSprite = getCargo();
+				c.x = x + height - 0.75 * height * Math.sin((angle + 90.0) / 180.0 * Math.PI);
+				c.y = y + height/2 + 0.75 * height * Math.cos((angle + 90.0) / 180.0 * Math.PI);
+				c.angle = angle;
+			}
+			
 			super.update();
 		}
 		
+		public function hasCargo():Boolean
+		{
+			return cargo.countLiving() > 0;
+		}
+		
+		public function getCargo():Powerup
+		{
+			return cargo.getFirstAlive() as Powerup;
+		}
+		
+		public function grabCargo(p:Powerup):void
+		{
+			cargo.add(p);
+		}
+		
+		public function dropCargo(w:World):void
+		{
+			var p:Powerup = getCargo();
+			w.addPowerup(p);
+			cargo.remove(p);
+		}
 	}
 
 }
