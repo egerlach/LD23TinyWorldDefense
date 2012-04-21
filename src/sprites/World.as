@@ -28,6 +28,7 @@ package sprites
 			FlxG.state.add(powerups);
 			makeSprite(baseSize);
 			immovable = true;
+			health = 3;
 		}
 		
 		public function makeSprite(size:Number):void
@@ -97,6 +98,7 @@ package sprites
 		override public function update():void
 		{
 			growthTimer += FlxG.elapsed;
+			
 			if (growthTimer > growthTime)
 			{
 				boxes += 1;
@@ -104,14 +106,18 @@ package sprites
 					baseSize += 1;
 				growthTimer = 0;
 				makeSprite(baseSize);
-			} else if (Math.sqrt(boxes + 1) > baseSize)
+			}
+			else if (Math.sqrt(boxes + 1) > baseSize)
 			{
 				var size:Number = baseSize + (growthTimer / growthTime);
 				makeSprite(size);
-			} else if (forcePlacePowerups)
+			}
+			else if (forcePlacePowerups)
 			{
 				makeSprite(baseSize);
 			}
+			
+			
 			forcePlacePowerups = false;
 			super.update();
 		}

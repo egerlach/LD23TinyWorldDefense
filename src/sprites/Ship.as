@@ -18,19 +18,31 @@ package sprites
 		private var shipImage:Class;
 		private var maxSpeed:Number;
 		private var cargo:FlxGroup;
+		public var bullets:FlxGroup;
+		public var shotTime:Number = 1;
+		public var shotSpeed:Number = 500;
+		public var shotTimer:Number;
 		
 		public function Ship(X:Number=0, Y:Number=0) 
 		{
 			super(X, Y, shipImage);
-			maxSpeed = 1000;
+			maxSpeed = 500;
 			velocity = new FlxPoint();
 			cargo = new FlxGroup(1);
+			bullets = new FlxGroup();
 			FlxG.state.add(cargo);
+			FlxG.state.add(bullets);
+			shotTimer = 0;
+			flicker(3);
+			solid = false;
 		}
 		
 		override public function update():void
 		{
 			var thrust:Point = new Point();
+			shotTimer -= FlxG.elapsed;
+			
+			if (!flickering) solid = true;
 			
 			if (FlxG.keys.LEFT)
 				angle -= 5;
@@ -38,16 +50,21 @@ package sprites
 				angle += 5;
 			if (FlxG.keys.UP)
 			{
-				thrust = Point.polar(5, angle / 180.0 * Math.PI);
+				thrust = Point.polar(5, (angle - 90) / 180.0 * Math.PI);
 			}
 			else if (FlxG.keys.DOWN)
 			{
-				thrust = Point.polar( -5, angle / 180.0 * Math.PI);
+				thrust = Point.polar( -5, (angle - 90) / 180.0 * Math.PI);
 			}
 			else 
 			{
 				thrust.x = -velocity.x * 0.02;
 				thrust.y = -velocity.y * 0.02;
+			}
+			if (FlxG.keys.SPACE && shotTimer <= 0)
+			{
+				fireBullet();
+				shotTimer = shotTime;
 			}
 			
 			velocity.x += thrust.x;
@@ -62,8 +79,8 @@ package sprites
 			if (hasCargo())
 			{
 				var c:FlxSprite = getCargo();
-				c.x = x + height - 0.75 * height * Math.sin((angle + 90.0) / 180.0 * Math.PI);
-				c.y = y + height/2 + 0.75 * height * Math.cos((angle + 90.0) / 180.0 * Math.PI);
+				c.x = getMidpoint().x;
+				c.y = getMidpoint().y;
 				c.angle = angle;
 			}
 			
@@ -83,13 +100,31 @@ package sprites
 		public function grabCargo(p:Powerup):void
 		{
 			cargo.add(p);
+			p.addToShip(this);
 		}
 		
 		public function dropCargo(w:World):void
 		{
+			if (!hasCargo())
+				return;
+			
 			var p:Powerup = getCargo();
 			w.addPowerup(p);
 			cargo.remove(p);
+		}
+		
+		public function fireBullet():void
+		{
+			var b:Bullet = bullets.recycle(Bullet) as Bullet;
+			
+			b.revive();
+			
+			b.x = getMidpoint().x;
+			b.y = getMidpoint().y;
+			b.angle = angle;
+			b.life = 5;
+			b.setSpeed(shotSpeed);
+			b.setColour(FlxG.BLUE);
 		}
 	}
 

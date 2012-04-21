@@ -7,10 +7,11 @@ package sprites
 	 */
 	public class GrowthPowerup extends Powerup 
 	{
+		private static const colour:uint = FlxG.GREEN;
 		
 		public function GrowthPowerup() 
 		{
-			super(FlxG.GREEN);
+			super(colour);
 		}
 		
 		override public function addToWorld(w:World):void

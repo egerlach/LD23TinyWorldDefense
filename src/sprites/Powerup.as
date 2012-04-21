@@ -1,6 +1,9 @@
 package sprites 
 {
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	import org.flixel.FlxSprite;
+	import org.flixel.FlxU;
 	
 	/**
 	 * ...
@@ -9,7 +12,6 @@ package sprites
 	public class Powerup extends FlxSprite 
 	{
 		public static const size:Number = 8.0;
-		public static const types:Array = [];
 		
 		public function Powerup(colour:uint) 
 		{
@@ -22,8 +24,16 @@ package sprites
 			makeGraphic(size, size, colour);
 		}
 		
-		public function addToWorld(w:World):void
+		public function addToWorld(w:World):void {}
+		public function addToShip(s:Ship):void {}
+		
+		public static function getPowerup():Powerup
 		{
+			const types:Array = [FireratePowerup, GrowthPowerup]; // Can't define this in a static constant, has to go here
+			var Definition:Class = FlxU.getRandom(types) as Class;
+			var instance:* = new Definition();
+			
+			return instance;
 		}
 	}
 
