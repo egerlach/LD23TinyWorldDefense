@@ -27,6 +27,7 @@ package
 		private var scoreText:FlxText;
 		public var difficulty:Number = 0.75;
 		private var difficultyRate:Number = 0.02;
+		private var gameOverText:FlxText;
 		
 		[Embed(source = "../assets/starfield.png")]
 		private var starfield:Class;
@@ -85,7 +86,16 @@ package
 		
 		override public function update():void
 		{
+			if (!world.alive && FlxG.keys.ENTER)
+			{
+				FlxG.score = 0;
+				FlxG.switchState(new PlayState);
+			}
+			
 			alienTimer -= FlxG.elapsed;
+			
+			if (FlxG.keys.justPressed("A"))
+				generateAlien();
 			
 			if (alienTimer < 0)
 				generateAlien();
@@ -163,12 +173,20 @@ package
 		
 		public function worldHit(w:World, b:Bullet):void
 		{
+			var midpoint:FlxPoint = w.getMidpoint();
 			var hit:uint = w.hit(1);
 			b.kill();
 			FlxG.camera.flash(hit == World.SHIELD ? World.shieldColour :0xffff0000, 0.1, null, true);
+			
 			if (!w.alive)
 			{
 				FlxG.camera.shake(0.01, 2);
+				FlxG.camera.target = null;
+				FlxG.camera.focusOn(midpoint);
+				gameOverText = new FlxText(0, FlxG.height / 2, FlxG.width, "THE TINY HOMEWORLD HAS BEEN DESTROYED!\nPRESS ENTER TO PLAY AGAIN");
+				gameOverText.scrollFactor = new FlxPoint;
+				gameOverText.setFormat(null, 16, 0xff597137, "center");
+				add(gameOverText);
 				ship.kill();
 			}
 			
