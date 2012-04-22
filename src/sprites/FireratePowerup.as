@@ -12,9 +12,9 @@ package sprites
 			super(colour);
 		}
 		
-		override public function addToShip(s:Ship):void
+		override public function addToWorld(w:World):void
 		{
-			s.shotTime *= 0.8;
+			w.ship.shotTime *= 0.8;
 		}
 
 	}

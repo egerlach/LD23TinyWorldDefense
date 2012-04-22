@@ -50,7 +50,7 @@ package
 			ship = new Ship(-25, -25);
 			add(ship);
 			
-			world = new World(healthHUD, shieldHUD, laserHUD);
+			world = new World(ship, healthHUD, shieldHUD, laserHUD);
 			add(world);
 			
 			ship.world = world;

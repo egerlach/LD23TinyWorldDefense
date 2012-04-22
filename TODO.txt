@@ -9,9 +9,9 @@ XXX - Add HUD for shield and health
 XXX - Fix scoring
 XXX - Add starfield
 XXX - Sound effects
+XXX - Game over text and restart
+XXX - Title screen
 
-- Game over text and restart
-- Title screen
 - Better graphics for ship
 - Better graphics for powerups
 - Add particle effects for explosions

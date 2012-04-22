@@ -21,7 +21,7 @@ package sprites
 		
 		private var baseSize:uint = 2; // Ceiling of square root of boxes
 		private var boxes:uint = 4;
-		public var growthTime:Number = 10; // seconds
+		public var growthTime:Number = 20; // seconds
 		private var growthTimer:Number = 0;
 		private var powerups:FlxGroup;
 		private var forcePlacePowerups:Boolean = false;
@@ -36,6 +36,7 @@ package sprites
 		private var healthHUD:HealthHUD;
 		private var shieldHUD:ShieldHUD;
 		private var laserHUD:LaserHUD;
+		public var ship:Ship;
 		
 		[Embed(source = "../../assets/laser.mp3")]
 		private var laserSound:Class;
@@ -46,7 +47,7 @@ package sprites
 		[Embed(source="../../assets/world_hit.mp3")]
 		private var hitSound:Class;
 		
-		public function World(h:HealthHUD, s:ShieldHUD, l:LaserHUD ) 
+		public function World(sh:Ship, h:HealthHUD, s:ShieldHUD, l:LaserHUD ) 
 		{
 			super(0, 0);
 			powerups = new FlxGroup();
@@ -62,6 +63,7 @@ package sprites
 			healthHUD.value = health;
 			shieldHUD = s;
 			laserHUD = l;
+			ship = sh;
 		}
 		
 		public function makeSprite(size:Number):void
