@@ -1,0 +1,8 @@
+- Add missile frequency powerup
+- Add missiles to world
+- Add shield powerup
+- Add shield to world
+- Add increasingly difficult (health) aliens
+- Add HUD for sheild and health
+- Add MaxHealth powerups
+- Add Heal powerups

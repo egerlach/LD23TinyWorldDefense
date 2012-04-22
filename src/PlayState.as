@@ -18,10 +18,12 @@ package
 		private var powerups:FlxGroup;
 		private var aliens:FlxGroup;
 		private var alienBullets:FlxGroup;
-		private var alienRate:Number = 0.1; //5
-		private var alienSpeed:Number = 100;
+		private var alienRate:Number = 5;
+		private var alienSpeed:Number = 25;
 		private var alienTimer:Number;
 		private var scoreText:FlxText;
+		public var difficulty:Number = 0.75;
+		private var difficultyRate:Number = 0.02;
 
 		override public function create():void
 		{
@@ -56,6 +58,8 @@ package
 				generatePowerup();
 				
 			FlxG.camera.follow(ship);
+			
+			FlxG.watch(this, 'difficulty');
 			
 			FlxG.worldBounds = new FlxRect( -1000, -1000, 2000, 2000);
 		}
@@ -92,6 +96,8 @@ package
 			
 			arrow.pointToHome(ship, world);
 			super.update();
+			
+			difficulty += difficultyRate * FlxG.elapsed;
 		}
 		
 		public function generatePowerup():void
@@ -107,8 +113,8 @@ package
 		{
 			var location:FlxPoint = new FlxPoint();
 			location.copyFromFlash(Point.polar(500, Math.random() * Math.PI * 2));
-			aliens.add(new Alien(location.x, location.y, world.getMidpoint(), alienSpeed));
-			alienTimer = alienRate;
+			aliens.add(new Alien(location.x, location.y, world.getMidpoint(), alienSpeed * difficulty));
+			alienTimer = alienRate / difficulty;
 		}
 		
 		public function grabCargo(s:Ship, p:Powerup):void
