@@ -59,7 +59,7 @@ package
 				
 			FlxG.camera.follow(ship);
 			
-			FlxG.watch(this, 'difficulty');
+			FlxG.watch(world, 'shield');
 			
 			FlxG.worldBounds = new FlxRect( -1000, -1000, 2000, 2000);
 		}
@@ -143,9 +143,9 @@ package
 		
 		public function worldHit(w:World, b:Bullet):void
 		{
-			w.hurt(1);
+			var hit:uint = w.hit(1);
 			b.kill();
-			FlxG.camera.flash(0xffff0000, 0.1, null, true);
+			FlxG.camera.flash(hit == World.SHIELD ? World.shieldColour :0xffff0000, 0.1, null, true);
 			if (!w.alive)
 			{
 				FlxG.camera.shake(0.01, 2);

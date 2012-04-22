@@ -29,7 +29,7 @@ package sprites
 		
 		public static function getPowerup():Powerup
 		{
-			const types:Array = [FireratePowerup, GrowthPowerup]; // Can't define this in a static constant, has to go here
+			const types:Array = [FireratePowerup, GrowthPowerup, MaxHealthPowerup, FullHealthPowerup, ShieldPowerup]; // Can't define this in a static constant, has to go here
 			var Definition:Class = FlxU.getRandom(types) as Class;
 			var instance:* = new Definition();
 			

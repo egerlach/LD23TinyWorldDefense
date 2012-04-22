@@ -14,12 +14,20 @@ package sprites
 	 */
 	public class World extends FlxSprite 
 	{
+		public static const SHIELD:uint = 0;
+		public static const HEALTH:uint = 1;
+		public static const shieldColour:uint = 0xff00dbdb;
+		
 		private var baseSize:uint = 2; // Ceiling of square root of boxes
 		private var boxes:uint = 4;
 		public var growthTime:Number = 10; // seconds
 		private var growthTimer:Number = 0;
 		private var powerups:FlxGroup;
 		private var forcePlacePowerups:Boolean = false;
+		private var shieldRate:Number = 0.2;
+		public var maxHealth:Number = 5;
+		public var shield:Number = 0;
+		public var maxShield:Number = 0;
 		
 		public function World() 
 		{
@@ -28,7 +36,7 @@ package sprites
 			FlxG.state.add(powerups);
 			makeSprite(baseSize);
 			immovable = true;
-			health = 5;
+			health = maxHealth;
 		}
 		
 		public function makeSprite(size:Number):void
@@ -117,7 +125,11 @@ package sprites
 				makeSprite(baseSize);
 			}
 			
-			
+			if (shield < maxShield)
+			{
+				shield = Math.min(FlxG.elapsed * shieldRate + shield, maxShield);
+			}
+				
 			forcePlacePowerups = false;
 			super.update();
 		}
@@ -127,11 +139,27 @@ package sprites
 			return powerups.countLiving() >= boxes;
 		}
 		
-		override public function hurt(damage:Number):void
+		public function hit(damage:Number):uint
 		{
+			if (shield > 0)
+			{
+				// Take it on the shield!
+				shield -= damage;
+				return SHIELD;
+			}
+			
 			super.hurt(damage);
+			
 			if (health <= 0)
 				kill();
+			
+			return HEALTH;
+		}
+		
+		override public function kill():void
+		{
+			powerups.kill();
+			super.kill();
 		}
 		
 	}

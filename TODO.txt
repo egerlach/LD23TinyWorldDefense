@@ -1,8 +1,15 @@
+XXX - Add MaxHealth powerups
+XXX - Add Heal powerups
+XXX - Add shield powerup
+XXX - Add shield to world
+
 - Add missile frequency powerup
 - Add missiles to world
-- Add shield powerup
-- Add shield to world
 - Add increasingly difficult (health) aliens
-- Add HUD for sheild and health
-- Add MaxHealth powerups
-- Add Heal powerups
+- Add HUD for shield and health
+- Game over text and restart
+- Title screen
+- Sound effects
+- Better graphics for ship
+- Better graphics for powerups
+- Put powerups in asteroids?
