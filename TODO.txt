@@ -4,13 +4,17 @@ XXX - Add shield powerup
 XXX - Add shield to world
 XXX - Add laser powerup
 XXX - Add lasers to world
+XXX - Laser graphics
+XXX - Add HUD for shield and health
+XXX - Fix scoring
+XXX - Add starfield
 
-- Laser graphics
-- Add increasingly difficult (health) aliens
-- Add HUD for shield and health
 - Game over text and restart
 - Title screen
 - Sound effects
 - Better graphics for ship
 - Better graphics for powerups
+- Add particle effects for explosions
+- Add particle effects for thrust
 - Put powerups in asteroids?
+- Minimap

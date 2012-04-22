@@ -5,8 +5,11 @@ package
 	import sprites.Alien;
 	import sprites.Bullet;
 	import sprites.GrowthPowerup;
+	import sprites.HealthHUD;
 	import sprites.HomeArrow;
+	import sprites.LaserHUD;
 	import sprites.Powerup;
+	import sprites.ShieldHUD;
 	import sprites.Ship;
 	import sprites.World;
 
@@ -24,9 +27,20 @@ package
 		private var scoreText:FlxText;
 		public var difficulty:Number = 0.75;
 		private var difficultyRate:Number = 0.02;
+		
+		[Embed(source = "../assets/starfield.png")]
+		private var starfield:Class;
 
 		override public function create():void
 		{
+			add(new FlxBackdrop(starfield, -0.1, -0.1, true, true));
+			
+			var healthHUD:HealthHUD = new HealthHUD(0, 0);
+			
+			var shieldHUD:ShieldHUD = new ShieldHUD;
+			
+			var laserHUD:LaserHUD = new LaserHUD;
+			
 			scoreText = new FlxText(10, 10, 200, "0");
 			scoreText.scrollFactor = new FlxPoint;
 			scoreText.setFormat(null, 16, 0xffffff, "left");
@@ -35,7 +49,7 @@ package
 			ship = new Ship(-25, -25);
 			add(ship);
 			
-			world = new World();
+			world = new World(healthHUD, shieldHUD, laserHUD);
 			add(world);
 			
 			ship.world = world;
@@ -57,10 +71,14 @@ package
 			for (var i:int = 0; i < 50; i++)
 				generatePowerup();
 				
+			add(healthHUD);
+			add(shieldHUD);
+			add(laserHUD);
+			
 			FlxG.camera.follow(ship);
 			
-			FlxG.watch(world, 'shield');
-			FlxG.watch(world, 'laserTimer');
+			FlxG.watch(ship, 'x');
+			FlxG.watch(ship, 'y');
 			
 			FlxG.worldBounds = new FlxRect( -1000, -1000, 2000, 2000);
 		}
@@ -133,7 +151,6 @@ package
 		{
 			a.kill();
 			b.kill();
-			FlxG.score += 1;
 			scoreText.text = FlxG.score.toString();
 		}		
 		

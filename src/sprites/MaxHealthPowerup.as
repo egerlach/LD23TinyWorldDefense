@@ -16,8 +16,7 @@ package sprites
 		
 		override public function addToWorld(w:World):void
 		{
-			w.maxHealth += 1;
-			w.health += 1;
+			w.addMaxHealth();
 		}
 		
 	}

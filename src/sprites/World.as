@@ -1,5 +1,6 @@
 package sprites 
 {
+	import adobe.utils.CustomActions;
 	import flash.display.BitmapData;
 	import flash.display.Shape;
 	import org.flixel.FlxG;
@@ -31,8 +32,12 @@ package sprites
 		public var lasers:Number = 0;
 		private var laserRecharge:Number = 10;
 		public var laserTimer:Number;
+		private var laserSprites:FlxGroup;
+		private var healthHUD:HealthHUD;
+		private var shieldHUD:ShieldHUD;
+		private var laserHUD:LaserHUD;
 		
-		public function World() 
+		public function World(h:HealthHUD, s:ShieldHUD, l:LaserHUD ) 
 		{
 			super(0, 0);
 			powerups = new FlxGroup();
@@ -41,6 +46,13 @@ package sprites
 			immovable = true;
 			health = maxHealth;
 			laserTimer = laserRecharge;
+			laserSprites = new FlxGroup;
+			FlxG.state.add(laserSprites);
+			healthHUD = h;
+			healthHUD.maxValue = maxHealth;
+			healthHUD.value = health;
+			shieldHUD = s;
+			laserHUD = l;
 		}
 		
 		public function makeSprite(size:Number):void
@@ -68,6 +80,22 @@ package sprites
 			forcePlacePowerups = true;
 			p.addToWorld(this);
 			powerups.add(p);
+		}
+		
+		public function addMaxHealth():void
+		{
+			health += 1;
+			maxHealth += 1;
+			healthHUD.maxValue = maxHealth;
+			healthHUD.value = health;
+		}
+		
+		public function addShield():void
+		{
+			maxShield += 1;
+			shield += 1;
+			shieldHUD.maxValue = maxShield;
+			shieldHUD.value = shield;
 		}
 		
 		public function placePowerups(radius:Number):void
@@ -134,10 +162,17 @@ package sprites
 				shield = Math.min(FlxG.elapsed * shieldRate + shield, maxShield);
 			}
 			
+			shieldHUD.value = shield;
+			
 			if (lasers > 0)
 			{
-				laserTimer -= FlxG.elapsed;				
+				laserTimer -= FlxG.elapsed;
+				laserHUD.maxValue = 1;
+				var laserMax:Number = laserRecharge / lasers;
+				laserHUD.value = (laserMax - laserTimer) / laserMax;
 			}
+			
+			laserSprites.update();
 			
 			forcePlacePowerups = false;
 			super.update();
@@ -154,10 +189,12 @@ package sprites
 			{
 				// Take it on the shield!
 				shield -= damage;
+				shieldHUD.value = shield;
 				return SHIELD;
 			}
 			
 			super.hurt(damage);
+			healthHUD.value = health;
 			
 			if (health <= 0)
 				kill();
@@ -192,6 +229,7 @@ package sprites
 				if (a.distanceToTarget <= Alien.holdingPatternDistance)
 				{
 					a.kill();
+					laserSprites.add(new Laser(getMidpoint(), a.getMidpoint(), 0.5));
 					FlxG.camera.flash(FlxG.WHITE, 0.02);
 					laserTimer = laserRecharge / lasers;
 				}

@@ -14,8 +14,7 @@ package sprites
 		
 		override public function addToWorld(w:World):void
 		{
-			w.maxShield += 1;
-			w.shield += 1;
+			w.addShield();
 		}
 		
 	}

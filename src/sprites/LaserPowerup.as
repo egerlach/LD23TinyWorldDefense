@@ -6,7 +6,7 @@ package sprites
 	 */
 	public class LaserPowerup extends Powerup 
 	{
-		private static const colour:uint = 0xffdbdb00;
+		public static const colour:uint = 0xffdbdb00;
 		
 		public function LaserPowerup() 
 		{

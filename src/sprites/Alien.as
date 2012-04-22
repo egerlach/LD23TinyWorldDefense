@@ -76,5 +76,11 @@ package sprites
 			
 			return null;
 		}
+		
+		override public function kill():void
+		{
+			FlxG.score += 1;
+			super.kill();
+		}
 	}
 }
