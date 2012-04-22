@@ -5,6 +5,7 @@ package sprites
 	import org.flixel.FlxBasic;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxPath;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	
@@ -22,8 +23,10 @@ package sprites
 		public var shotTime:Number = 1;
 		public var shotSpeed:Number = 500;
 		public var shotTimer:Number;
+		public var world:World;
+		public var respawning:Boolean = false;
 		
-		public function Ship(X:Number=0, Y:Number=0) 
+		public function Ship(X:Number, Y:Number) 
 		{
 			super(X, Y, shipImage);
 			maxSpeed = 500;
@@ -41,6 +44,19 @@ package sprites
 		{
 			var thrust:Point = new Point();
 			shotTimer -= FlxG.elapsed;
+			
+			if (pathSpeed > 0)
+			{
+				super.update();
+				return;
+			}
+			
+			if (respawning)
+			{
+				visible = true;
+				flicker(3);
+				respawning = false;
+			}
 			
 			if (!flickering) solid = true;
 			
@@ -117,14 +133,24 @@ package sprites
 		{
 			var b:Bullet = bullets.recycle(Bullet) as Bullet;
 			
-			b.revive();
+			b.reset(getMidpoint().x, getMidpoint().y);
 			
-			b.x = getMidpoint().x;
-			b.y = getMidpoint().y;
 			b.angle = angle;
 			b.life = 5;
 			b.setSpeed(shotSpeed);
 			b.setColour(FlxG.BLUE);
+		}
+		
+		public function kaboom():void
+		{
+			visible = false;
+			solid = false;
+			respawning = true;
+			
+			var path:FlxPath = new FlxPath;
+			path.addPoint(getMidpoint());
+			path.addPoint(world.getMidpoint());
+			followPath(path, 100);
 		}
 	}
 

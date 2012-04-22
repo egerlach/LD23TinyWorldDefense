@@ -14,7 +14,7 @@ package sprites
 		[Embed(source="../../assets/arrow.png")]
 		private var arrowImage:Class;
 		
-		public function HomeArrow(X:Number=50, Y:Number=50, SimpleGraphic:Class=null) 
+		public function HomeArrow(X:Number=50, Y:Number=50) 
 		{
 			super(X, Y, arrowImage);
 			scrollFactor = new FlxPoint();

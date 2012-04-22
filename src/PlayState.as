@@ -18,18 +18,27 @@ package
 		private var powerups:FlxGroup;
 		private var aliens:FlxGroup;
 		private var alienBullets:FlxGroup;
-		private var alienRate:Number = 5;
+		private var alienRate:Number = 0.1; //5
+		private var alienSpeed:Number = 100;
 		private var alienTimer:Number;
+		private var scoreText:FlxText;
 
 		override public function create():void
 		{
+			scoreText = new FlxText(10, 10, 200, "0");
+			scoreText.scrollFactor = new FlxPoint;
+			scoreText.setFormat(null, 16, 0xffffff, "left");
+			add(scoreText);
+			
 			ship = new Ship(-25, -25);
 			add(ship);
 			
 			world = new World();
 			add(world);
 			
-			arrow = new HomeArrow();
+			ship.world = world;
+			
+			arrow = new HomeArrow(FlxG.width - 50, 50);
 			add(arrow);
 
 			powerups = new FlxGroup();
@@ -43,7 +52,7 @@ package
 			
 			alienTimer = alienRate;
 			
-			for (var i:int = 0; i < 100; i++)
+			for (var i:int = 0; i < 50; i++)
 				generatePowerup();
 				
 			FlxG.camera.follow(ship);
@@ -60,6 +69,9 @@ package
 			
 			FlxG.overlap(ship, powerups, grabCargo);
 			FlxG.overlap(aliens, ship.bullets, shotAlien);
+			FlxG.overlap(ship, aliens, shipDestroyed);
+			FlxG.overlap(ship, alienBullets, shipDestroyed);
+			FlxG.overlap(world, alienBullets, worldHit);
 
 			if (FlxG.collide(ship, world) && !world.powerupsFull())
 			{
@@ -95,7 +107,7 @@ package
 		{
 			var location:FlxPoint = new FlxPoint();
 			location.copyFromFlash(Point.polar(500, Math.random() * Math.PI * 2));
-			aliens.add(new Alien(location.x, location.y, world.getMidpoint(), 10));
+			aliens.add(new Alien(location.x, location.y, world.getMidpoint(), alienSpeed));
 			alienTimer = alienRate;
 		}
 		
@@ -112,7 +124,30 @@ package
 		{
 			a.kill();
 			b.kill();
+			FlxG.score += 1;
+			scoreText.text = FlxG.score.toString();
+		}		
+		
+		public function shipDestroyed(s:Ship, o:FlxBasic):void
+		{
+			ship.kaboom();
+			if (o is Bullet)
+				o.kill();
 		}
+		
+		public function worldHit(w:World, b:Bullet):void
+		{
+			w.hurt(1);
+			b.kill();
+			FlxG.camera.flash(0xffff0000, 0.1, null, true);
+			if (!w.alive)
+			{
+				FlxG.camera.shake(0.01, 2);
+				ship.kill();
+			}
+			
+		}
+
 	}
 }
 

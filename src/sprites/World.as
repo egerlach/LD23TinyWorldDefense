@@ -28,7 +28,7 @@ package sprites
 			FlxG.state.add(powerups);
 			makeSprite(baseSize);
 			immovable = true;
-			health = 3;
+			health = 5;
 		}
 		
 		public function makeSprite(size:Number):void
@@ -125,6 +125,13 @@ package sprites
 		public function powerupsFull():Boolean
 		{
 			return powerups.countLiving() >= boxes;
+		}
+		
+		override public function hurt(damage:Number):void
+		{
+			super.hurt(damage);
+			if (health <= 0)
+				kill();
 		}
 		
 	}
