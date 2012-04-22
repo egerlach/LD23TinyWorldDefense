@@ -2,9 +2,10 @@ XXX - Add MaxHealth powerups
 XXX - Add Heal powerups
 XXX - Add shield powerup
 XXX - Add shield to world
+XXX - Add laser powerup
+XXX - Add lasers to world
 
-- Add missile frequency powerup
-- Add missiles to world
+- Laser graphics
 - Add increasingly difficult (health) aliens
 - Add HUD for shield and health
 - Game over text and restart

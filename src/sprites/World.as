@@ -28,6 +28,9 @@ package sprites
 		public var maxHealth:Number = 5;
 		public var shield:Number = 0;
 		public var maxShield:Number = 0;
+		public var lasers:Number = 0;
+		private var laserRecharge:Number = 10;
+		public var laserTimer:Number;
 		
 		public function World() 
 		{
@@ -37,6 +40,7 @@ package sprites
 			makeSprite(baseSize);
 			immovable = true;
 			health = maxHealth;
+			laserTimer = laserRecharge;
 		}
 		
 		public function makeSprite(size:Number):void
@@ -129,7 +133,12 @@ package sprites
 			{
 				shield = Math.min(FlxG.elapsed * shieldRate + shield, maxShield);
 			}
-				
+			
+			if (lasers > 0)
+			{
+				laserTimer -= FlxG.elapsed;				
+			}
+			
 			forcePlacePowerups = false;
 			super.update();
 		}
@@ -160,6 +169,33 @@ package sprites
 		{
 			powerups.kill();
 			super.kill();
+		}
+		
+		public function addLaser():void
+		{
+			lasers += 1;
+			if (lasers == 1)
+				laserTimer = laserRecharge;
+			else
+				laserTimer *= (lasers - 1) / lasers;
+		}
+		
+		public function fireLaser(aliens:FlxGroup):void
+		{
+			if (lasers == 0)
+				return;
+				
+			if (laserTimer <= 0)
+			{
+				aliens.sort('distanceToTarget');
+				var a:Alien = aliens.getFirstAlive() as Alien;
+				if (a.distanceToTarget <= Alien.holdingPatternDistance)
+				{
+					a.kill();
+					FlxG.camera.flash(FlxG.WHITE, 0.02);
+					laserTimer = laserRecharge / lasers;
+				}
+			}
 		}
 		
 	}

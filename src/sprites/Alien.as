@@ -19,6 +19,8 @@ package sprites
 		private var shotTime:Number = 5;
 		private var shotTimer:Number;
 		private var destinationAngle:Number;
+		public var distanceToTarget:Number;
+		public static const holdingPatternDistance:Number = 200;
 		
 		public function Alien(X:Number, Y:Number, Destination:FlxPoint, Speed:Number)
 		{
@@ -31,14 +33,15 @@ package sprites
 		}
 		
 		override public function update():void
-		{	
+		{
+			distanceToTarget = FlxU.getDistance(getMidpoint(), destination);
 			if (flickering)
 			{
 				super.update();
 				return;
 			}
 
-			if (FlxU.getDistance(destination, getMidpoint()) < 200)
+			if (distanceToTarget < holdingPatternDistance)
 			{
 				velocity = new FlxPoint();
 				shotTimer -= FlxG.elapsed;

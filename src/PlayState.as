@@ -60,6 +60,7 @@ package
 			FlxG.camera.follow(ship);
 			
 			FlxG.watch(world, 'shield');
+			FlxG.watch(world, 'laserTimer');
 			
 			FlxG.worldBounds = new FlxRect( -1000, -1000, 2000, 2000);
 		}
@@ -93,6 +94,8 @@ package
 						alienBullets.add(b);
 				}
 			}
+			
+			world.fireLaser(aliens);
 			
 			arrow.pointToHome(ship, world);
 			super.update();
