@@ -11,6 +11,7 @@ XXX - Add starfield
 XXX - Sound effects
 XXX - Game over text and restart
 XXX - Title screen
+XXX - Make camera go to centre on death
 
 - Better graphics for ship
 - Better graphics for powerups
@@ -18,4 +19,3 @@ XXX - Title screen
 - Add particle effects for thrust
 - Put powerups in asteroids?
 - Minimap
-- Make camera go to centre on death

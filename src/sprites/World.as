@@ -36,6 +36,7 @@ package sprites
 		private var healthHUD:HealthHUD;
 		private var shieldHUD:ShieldHUD;
 		private var laserHUD:LaserHUD;
+		private var slotsHUD:SlotsHUD;
 		public var ship:Ship;
 		
 		[Embed(source = "../../assets/laser.mp3")]
@@ -47,7 +48,7 @@ package sprites
 		[Embed(source="../../assets/world_hit.mp3")]
 		private var hitSound:Class;
 		
-		public function World(sh:Ship, h:HealthHUD, s:ShieldHUD, l:LaserHUD ) 
+		public function World(sh:Ship, h:HealthHUD, s:ShieldHUD, l:LaserHUD, sl:SlotsHUD ) 
 		{
 			super(0, 0);
 			powerups = new FlxGroup();
@@ -63,6 +64,9 @@ package sprites
 			healthHUD.value = health;
 			shieldHUD = s;
 			laserHUD = l;
+			slotsHUD = sl;
+			slotsHUD.maxValue = boxes;
+			slotsHUD.value = 0;
 			ship = sh;
 		}
 		
@@ -90,6 +94,7 @@ package sprites
 			p.angle = 0;
 			forcePlacePowerups = true;
 			p.addToWorld(this);
+			slotsHUD.value += 1;
 			powerups.add(p);
 		}
 		
@@ -107,6 +112,12 @@ package sprites
 			shield += 1;
 			shieldHUD.maxValue = maxShield;
 			shieldHUD.value = shield;
+		}
+		
+		public function heal():void
+		{
+			health = maxHealth;
+			healthHUD.value = health;
 		}
 		
 		public function placePowerups(radius:Number):void
@@ -147,12 +158,13 @@ package sprites
 		}
 		
 		override public function update():void
-		{
+		{		
 			growthTimer += FlxG.elapsed;
 			
 			if (growthTimer > growthTime)
 			{
 				boxes += 1;
+				slotsHUD.maxValue = boxes;
 				if (Math.sqrt(boxes) > baseSize)
 					baseSize += 1;
 				growthTimer = 0;

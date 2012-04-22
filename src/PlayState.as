@@ -11,6 +11,7 @@ package
 	import sprites.Powerup;
 	import sprites.ShieldHUD;
 	import sprites.Ship;
+	import sprites.SlotsHUD;
 	import sprites.World;
 
 	public class PlayState extends FlxState
@@ -37,10 +38,9 @@ package
 			add(new FlxBackdrop(starfield, -0.1, -0.1, true, true));
 			
 			var healthHUD:HealthHUD = new HealthHUD(0, 0);
-			
 			var shieldHUD:ShieldHUD = new ShieldHUD;
-			
 			var laserHUD:LaserHUD = new LaserHUD;
+			var slotsHUD:SlotsHUD = new SlotsHUD;
 			
 			scoreText = new FlxText(10, 10, 200, "0");
 			scoreText.scrollFactor = new FlxPoint;
@@ -50,12 +50,12 @@ package
 			ship = new Ship(-25, -25);
 			add(ship);
 			
-			world = new World(ship, healthHUD, shieldHUD, laserHUD);
+			world = new World(ship, healthHUD, shieldHUD, laserHUD, slotsHUD);
 			add(world);
 			
 			ship.world = world;
 			
-			arrow = new HomeArrow(FlxG.width - 50, 50);
+			arrow = new HomeArrow(FlxG.width - 50, 25);
 			add(arrow);
 
 			powerups = new FlxGroup();
@@ -73,6 +73,7 @@ package
 				generatePowerup();
 				
 			add(healthHUD);
+			add(slotsHUD);
 			add(shieldHUD);
 			add(laserHUD);
 			
@@ -86,6 +87,8 @@ package
 		
 		override public function update():void
 		{
+			scoreText.text = FlxG.score.toString();
+			
 			if (!world.alive && FlxG.keys.ENTER)
 			{
 				FlxG.score = 0;
@@ -161,7 +164,6 @@ package
 		{
 			a.kill();
 			b.kill();
-			scoreText.text = FlxG.score.toString();
 		}		
 		
 		public function shipDestroyed(s:Ship, o:FlxBasic):void

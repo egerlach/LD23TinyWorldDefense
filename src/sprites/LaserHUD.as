@@ -9,7 +9,7 @@ package sprites
 		
 		public function LaserHUD()
 		{
-			super(250, 35, 0, 0, 0xffdbdb00);
+			super(250, 30, 0, 0, 0xffdbdb00);
 			pixelsPerUnit *= 5;
 		}
 		
