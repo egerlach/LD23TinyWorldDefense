@@ -35,6 +35,13 @@ package sprites
 			
 			return instance;
 		}
+		
+		public function goFlying():void
+		{
+			velocity.x = Math.random() * 500 - 250;
+			velocity.y = Math.random() * 500 - 250;
+			angularVelocity = Math.random() * 360 - 180;
+		}
 	}
 
 }

@@ -26,6 +26,17 @@ package sprites
 		public var world:World;
 		public var respawning:Boolean = false;
 		
+		[Embed(source="../../assets/powerup_get.mp3")]
+		public var powerupPickupSound:Class;
+		[Embed(source="../../assets/powerup_drop.mp3")]
+		public var powerupDropSound:Class;
+		[Embed(source="../../assets/ship_appear.mp3")]
+		public var appearSound:Class;
+		[Embed(source="../../assets/ship_explode.mp3")]
+		public var explodeSound:Class;
+		[Embed(source="../../assets/ship_bullet.mp3")]
+		public var bulletSound:Class;
+		
 		public function Ship(X:Number, Y:Number) 
 		{
 			super(X, Y, shipImage);
@@ -36,7 +47,7 @@ package sprites
 			FlxG.state.add(cargo);
 			FlxG.state.add(bullets);
 			shotTimer = 0;
-			flicker(3);
+			respawning = true;
 			solid = false;
 		}
 		
@@ -53,6 +64,7 @@ package sprites
 			
 			if (respawning)
 			{
+				FlxG.play(appearSound);
 				visible = true;
 				flicker(3);
 				respawning = false;
@@ -115,6 +127,7 @@ package sprites
 		
 		public function grabCargo(p:Powerup):void
 		{
+			FlxG.play(powerupPickupSound);
 			cargo.add(p);
 			p.addToShip(this);
 		}
@@ -124,6 +137,7 @@ package sprites
 			if (!hasCargo())
 				return;
 			
+			FlxG.play(powerupDropSound);
 			var p:Powerup = getCargo();
 			w.addPowerup(p);
 			cargo.remove(p);
@@ -139,6 +153,8 @@ package sprites
 			b.life = 5;
 			b.setSpeed(shotSpeed);
 			b.setColour(FlxG.BLUE);
+			
+			FlxG.play(bulletSound);
 		}
 		
 		public function kaboom():void
@@ -151,6 +167,8 @@ package sprites
 			path.addPoint(getMidpoint());
 			path.addPoint(world.getMidpoint());
 			followPath(path, 100);
+			
+			FlxG.play(explodeSound);
 		}
 	}
 

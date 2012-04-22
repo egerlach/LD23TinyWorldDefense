@@ -37,6 +37,15 @@ package sprites
 		private var shieldHUD:ShieldHUD;
 		private var laserHUD:LaserHUD;
 		
+		[Embed(source = "../../assets/laser.mp3")]
+		private var laserSound:Class;
+		[Embed(source="../../assets/shield_hit.mp3")]
+		private var shieldSound:Class;
+		[Embed(source="../../assets/world_explode.mp3")]
+		private var explodesound:Class;
+		[Embed(source="../../assets/world_hit.mp3")]
+		private var hitSound:Class;
+		
 		public function World(h:HealthHUD, s:ShieldHUD, l:LaserHUD ) 
 		{
 			super(0, 0);
@@ -190,6 +199,7 @@ package sprites
 				// Take it on the shield!
 				shield -= damage;
 				shieldHUD.value = shield;
+				FlxG.play(shieldSound);
 				return SHIELD;
 			}
 			
@@ -197,14 +207,21 @@ package sprites
 			healthHUD.value = health;
 			
 			if (health <= 0)
+			{
+				FlxG.play(explodesound);
 				kill();
+			}
+			else
+			{
+				FlxG.play(hitSound);
+			}
 			
 			return HEALTH;
 		}
 		
 		override public function kill():void
 		{
-			powerups.kill();
+			powerups.callAll('goFlying');
 			super.kill();
 		}
 		
@@ -229,6 +246,7 @@ package sprites
 				if (a.distanceToTarget <= Alien.holdingPatternDistance)
 				{
 					a.kill();
+					FlxG.play(laserSound);
 					laserSprites.add(new Laser(getMidpoint(), a.getMidpoint(), 0.5));
 					FlxG.camera.flash(FlxG.WHITE, 0.02);
 					laserTimer = laserRecharge / lasers;

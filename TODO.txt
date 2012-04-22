@@ -8,13 +8,14 @@ XXX - Laser graphics
 XXX - Add HUD for shield and health
 XXX - Fix scoring
 XXX - Add starfield
+XXX - Sound effects
 
 - Game over text and restart
 - Title screen
-- Sound effects
 - Better graphics for ship
 - Better graphics for powerups
 - Add particle effects for explosions
 - Add particle effects for thrust
 - Put powerups in asteroids?
 - Minimap
+- Make camera go to centre on death

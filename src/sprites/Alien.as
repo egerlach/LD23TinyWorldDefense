@@ -22,6 +22,15 @@ package sprites
 		public var distanceToTarget:Number;
 		public static const holdingPatternDistance:Number = 200;
 		
+		[Embed(source = "../../assets/alien_appear.mp3")]
+		public var appearSound:Class;
+		
+		[Embed(source = "../../assets/alien_bullet.mp3")]
+		public var shotSound:Class;
+
+		[Embed(source = "../../assets/alien_explosion.mp3")]
+		public var explodeSound:Class;
+
 		public function Alien(X:Number, Y:Number, Destination:FlxPoint, Speed:Number)
 		{
 			super(X, Y, alienImage);
@@ -30,6 +39,7 @@ package sprites
 			destination = Destination;
 			speed = Speed;
 			shotTimer = shotTime;
+			FlxG.play(appearSound);
 		}
 		
 		override public function update():void
@@ -71,6 +81,8 @@ package sprites
 				
 				shotTimer = shotTime;
 				
+				FlxG.play(shotSound);
+				
 				return b;
 			}
 			
@@ -80,6 +92,7 @@ package sprites
 		override public function kill():void
 		{
 			FlxG.score += 1;
+			FlxG.play(explodeSound);
 			super.kill();
 		}
 	}
