@@ -13,9 +13,9 @@ XXX - Game over text and restart
 XXX - Title screen
 XXX - Make camera go to centre on death
 XXX - Better graphics for powerups
+XXX - Add particle effects for explosions
 
 - Better graphics for ship
-- Add particle effects for explosions
 - Add particle effects for thrust
 - Put powerups in asteroids?
 - Minimap

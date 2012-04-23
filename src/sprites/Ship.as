@@ -157,7 +157,7 @@ package sprites
 			FlxG.play(bulletSound);
 		}
 		
-		public function kaboom():void
+		public function kaboom():Powerup
 		{
 			visible = false;
 			solid = false;
@@ -169,6 +169,15 @@ package sprites
 			followPath(path, 100);
 			
 			FlxG.play(explodeSound);
+			
+			if (hasCargo())
+			{
+				var p:Powerup = getCargo();
+				cargo.remove(p);
+				return p
+			}
+			
+			return null;
 		}
 	}
 

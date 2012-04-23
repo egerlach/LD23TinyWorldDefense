@@ -126,7 +126,9 @@ package
 				}
 			}
 			
-			world.fireLaser(aliens);
+			var explosion:FlxPoint = world.fireLaser(aliens);
+			if (explosion != null)
+				alienExplosion(explosion.x, explosion.y);
 			
 			arrow.pointToHome(ship, world);
 			super.update();
@@ -137,8 +139,10 @@ package
 		public function generatePowerup():void
 		{
 			var p:Powerup = Powerup.getPowerup();
-			p.x = Math.random() * 2000 - 1000;
-			p.y = Math.random() * 2000 - 1000;
+			while (FlxU.abs(p.x) < 100)
+				p.x = Math.random() * 1500 - 750;
+			while (FlxU.abs(p.y) < 100)
+				p.y = Math.random() * 1500 - 750;
 			
 			powerups.add(p);
 		}
@@ -162,13 +166,17 @@ package
 		
 		public function shotAlien(a:Alien, b:Bullet):void
 		{
+			alienExplosion(a.x, a.y);
 			a.kill();
 			b.kill();
 		}		
 		
 		public function shipDestroyed(s:Ship, o:FlxBasic):void
 		{
-			ship.kaboom();
+			add(new Explosion(ship.x, ship.y, 2, 100, 0xff0000ff, 150, 3));
+			var droppedCargo:Powerup = ship.kaboom();
+			if (droppedCargo != null)
+				powerups.add(droppedCargo);
 			if (o is Bullet)
 				o.kill();
 		}
@@ -185,6 +193,7 @@ package
 				FlxG.camera.shake(0.01, 2);
 				FlxG.camera.target = null;
 				FlxG.camera.focusOn(midpoint);
+				add(new Explosion(w.x, w.y, 10, 30, 0xff999999, 50, 0));
 				gameOverText = new FlxText(0, FlxG.height / 2, FlxG.width, "THE TINY HOMEWORLD HAS BEEN DESTROYED!\nPRESS ENTER TO PLAY AGAIN");
 				gameOverText.scrollFactor = new FlxPoint;
 				gameOverText.setFormat(null, 16, 0xff597137, "center");
@@ -192,6 +201,11 @@ package
 				ship.kill();
 			}
 			
+		}
+		
+		public function alienExplosion(x:Number, y:Number):void
+		{
+			add(new Explosion(x, y, 4, 20, 0xff004900, 100, 2));
 		}
 
 	}

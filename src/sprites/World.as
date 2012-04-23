@@ -248,10 +248,10 @@ package sprites
 				laserTimer *= (lasers - 1) / lasers;
 		}
 		
-		public function fireLaser(aliens:FlxGroup):void
+		public function fireLaser(aliens:FlxGroup):FlxPoint
 		{
 			if (lasers == 0)
-				return;
+				return null;
 				
 			if (laserTimer <= 0)
 			{
@@ -264,8 +264,11 @@ package sprites
 					laserSprites.add(new Laser(getMidpoint(), a.getMidpoint(), 0.5));
 					FlxG.camera.flash(FlxG.WHITE, 0.02);
 					laserTimer = laserRecharge / lasers;
+					return a.getMidpoint();
 				}
 			}
+			
+			return null;
 		}
 		
 	}

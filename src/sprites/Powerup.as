@@ -42,8 +42,8 @@ package sprites
 		
 		public function goFlying():void
 		{
-			velocity.x = Math.random() * 500 - 250;
-			velocity.y = Math.random() * 500 - 250;
+			velocity.x = Math.random() * 200 - 100;
+			velocity.y = Math.random() * 200 - 100;
 			angularVelocity = Math.random() * 360 - 180;
 		}
 	}
