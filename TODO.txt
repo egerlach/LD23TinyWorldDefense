@@ -12,9 +12,9 @@ XXX - Sound effects
 XXX - Game over text and restart
 XXX - Title screen
 XXX - Make camera go to centre on death
+XXX - Better graphics for powerups
 
 - Better graphics for ship
-- Better graphics for powerups
 - Add particle effects for explosions
 - Add particle effects for thrust
 - Put powerups in asteroids?

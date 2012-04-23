@@ -13,10 +13,14 @@ package sprites
 	{
 		public static const size:Number = 8.0;
 		
-		public function Powerup(colour:uint) 
+		public function Powerup(colour:uint, image:Class = null)
 		{
-			super(0, 0);
-			setupGraphics(colour);
+			super(0, 0, image);
+			
+			if (image == null)
+			{
+				setupGraphics(colour);
+			}
 		}
 		
 		public function setupGraphics(colour:uint):void

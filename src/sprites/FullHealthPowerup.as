@@ -7,10 +7,12 @@ package sprites
 	 */
 	public class FullHealthPowerup extends Powerup 
 	{
+		[Embed(source="../../assets/fullHealthPowerup.png")]
+		public const image:Class;
 		private static const colour = FlxG.WHITE;
 		public function FullHealthPowerup() 
 		{
-			super(colour);
+			super(colour,image);
 		}
 		
 		override public function addToWorld(w:World):void

@@ -7,11 +7,13 @@ package sprites
 	 */
 	public class GrowthPowerup extends Powerup 
 	{
+		[Embed(source="../../assets/growthPowerup.png")]
+		public const image:Class;
 		private static const colour:uint = FlxG.GREEN;
 		
 		public function GrowthPowerup() 
 		{
-			super(colour);
+			super(colour, image);
 		}
 		
 		override public function addToWorld(w:World):void
