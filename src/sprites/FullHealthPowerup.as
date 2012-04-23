@@ -9,7 +9,7 @@ package sprites
 	{
 		[Embed(source="../../assets/fullHealthPowerup.png")]
 		public const image:Class;
-		private static const colour = FlxG.WHITE;
+		private static const colour:uint = FlxG.WHITE;
 		public function FullHealthPowerup() 
 		{
 			super(colour,image);

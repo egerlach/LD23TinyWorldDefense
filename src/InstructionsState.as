@@ -45,7 +45,7 @@ package
 			FlxG.switchState(new PlayState());
 		}
 
-		public function addText(x:Number, y:Number, width:Number, text:String)
+		public function addText(x:Number, y:Number, width:Number, text:String):void
 		{
 			var t:FlxText = new FlxText(x, y, width, text);
 			t.setFormat(null, 16, 0xffffff, "left");
@@ -53,7 +53,7 @@ package
 			add(t);
 		}
 		
-		public function addPowerup(y:Number, sprite:FlxSprite, text:String)
+		public function addPowerup(y:Number, sprite:FlxSprite, text:String):void
 		{
 			sprite.x = textX;
 			sprite.y = y + 7;
