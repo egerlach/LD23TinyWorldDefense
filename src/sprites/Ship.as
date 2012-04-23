@@ -49,6 +49,7 @@ package sprites
 			shotTimer = 0;
 			respawning = true;
 			solid = false;
+			centerOffsets();
 		}
 		
 		override public function update():void
@@ -106,9 +107,12 @@ package sprites
 			
 			if (hasCargo())
 			{
+				var pt:FlxPoint = new FlxPoint;
+				pt.copyFromFlash(Point.polar(1, (angle - 90) / 180.0 * Math.PI));
+
 				var c:FlxSprite = getCargo();
-				c.x = getMidpoint().x;
-				c.y = getMidpoint().y;
+				c.x = getMidpoint().x - 0.75 * height * pt.x;
+				c.y = getMidpoint().y - 0.75 * height * pt.y;
 				c.angle = angle;
 			}
 			
